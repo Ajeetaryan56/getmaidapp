@@ -20,13 +20,16 @@ class User_model extends CI_Model
     public $isPremium;
     public $CreatedDate;
     public $ModifiedDate;
-	private $db;
+	
 
 	public function read(){
-		$query = $this->db->query("select * from `users`");
-		$userVal = $query->result_array();
+
+		return $this->db->select("*")->from('users')->get()->result_array();
+		 
+		//$query = $this->db->query("select * from `users`");
+		//$userVal = $query->result_array();
 		//$userVal.PASSWORD = '';
-		return userVal;
+		//return $userVal;
 	}
 
 	public function insert($data){
@@ -39,9 +42,10 @@ class User_model extends CI_Model
 		$this->City    = $data['City'];
 		$this->State = $data['State'];
 		$this->Pincode  = $data['Pincode'];
+		$this->isPremium = $data['isPremium'];
 		$this->CreatedDate    = date("Y-m-d H:i:s");
 		$this->ModifiedDate = date("Y-m-d H:i:s");
-
+		
 		if($this->db->insert('users',$this))
 		{
 			return 'User is added successfully';
@@ -77,7 +81,8 @@ class User_model extends CI_Model
 	}
 
 	public function delete($id){
-		$result = $this->db->query("delete from `users` where ID = $id");
+		$result= $this->db->delete('users', ['ID'=>$id]);
+		//$result = $this->db->query("delete from `users` where ID = $id");
 		if($result)
 		{
 			return "User Profile is deleted successfully";

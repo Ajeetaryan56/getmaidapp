@@ -1,13 +1,11 @@
 <?php
+require(APPPATH.'/libraries/RestController.php');
+use chriskacerguis\RestServer\RestController;
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require(APPPATH.'/libraries/REST_Controller.php');
-class Api extends REST_Controller
+class Api extends RestController
 {
-
-	public $user_model;
-	protected $input;
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -22,16 +20,17 @@ class Api extends REST_Controller
 
 	public function user_put()
 	{
-		$id = $this->uri->segment(9);
-		$data = array('FirstName' => $this->input->get('FirstName'),
-			'LastName' => $this->input->get('LastName'),
-			'MobileNumber' => $this->input->get('MobileNumber'),
-			'EmailId' => $this->input->get('EmailId'),
-			'PASSWORD' => $this->input->get('PASSWORD'),
-			'Address' => $this->input->get('Address'),
-		    'City' => $this->input->get('City'),
-			'State' => $this->input->get('State'),
-			'Pincode' => $this->input->get('Pincode')
+		$id=$this->put('id');
+		$data = array('FirstName' => $this->put('FirstName'),
+			'LastName' => $this->put('LastName'),
+			'MobileNumber' => $this->put('MobileNumber'),
+			'EmailId' => $this->put('EmailId'),
+			'PASSWORD' => $this->put('PASSWORD'),
+			'Address' => $this->put('Address'),
+		    'City' => $this->put('City'),
+			'State' => $this->put('State'),
+			'Pincode' => $this->put('Pincode'),
+			'isPremium'=> $this->post('isPremium')
 		);
 
 		$r = $this->user_model->update($id, $data);
@@ -40,15 +39,16 @@ class Api extends REST_Controller
 
 	public function user_post()
 	{
-		$data = array('FirstName' => $this->input->get('FirstName'),
-			'LastName' => $this->input->get('LastName'),
-			'MobileNumber' => $this->input->get('MobileNumber'),
-			'EmailId' => $this->input->get('EmailId'),
-			'PASSWORD' => $this->input->get('PASSWORD'),
-			'Address' => $this->input->get('Address'),
-			'City' => $this->input->get('City'),
-			'State' => $this->input->get('State'),
-			'Pincode' => $this->input->get('Pincode')
+		$data = array('FirstName' => $this->post('FirstName'),
+			'LastName' => $this->post('LastName'),
+			'MobileNumber' => $this->post('MobileNumber'),
+			'EmailId' => $this->post('EmailId'),
+			'PASSWORD' => $this->post('PASSWORD'),
+			'Address' => $this->post('Address'),
+			'City' => $this->post('City'),
+			'State' => $this->post('State'),
+			'Pincode' => $this->post('Pincode'),
+			'isPremium'=> $this->post('isPremium')
 		);
 		$r = $this->user_model->insert($data);
 		$this->response($r);
@@ -56,7 +56,7 @@ class Api extends REST_Controller
 
 	public function user_delete()
 	{
-		$id = $this->uri->segment(3);
+		$id = $this->delete('id');
 		$r = $this->user_model->delete($id);
 		$this->response($r);
 	}
