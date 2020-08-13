@@ -6,7 +6,7 @@ class Api extends REST_Controller
 {
 
 	public $user_model;
-	private $input;
+	protected $input;
 
 	public function __construct()
 	{

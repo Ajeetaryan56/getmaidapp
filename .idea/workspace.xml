@@ -7,7 +7,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -17,6 +17,9 @@
         <option value="composer.json" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1g0BrmSsyh7W0LApMLqWuYSddYq" />
   <component name="ProjectViewState">
@@ -37,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1597241839012</updated>
       <workItem from="1597241844336" duration="14232000" />
+      <workItem from="1597312772453" duration="801000" />
     </task>
     <servers />
   </component>
@@ -48,9 +52,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="560" y="152" key="#PHP/0.0.1920.1040@0.0.1920.1040" timestamp="1597271626303" />
-    <state x="1365" y="433" key="NewPhpFileDialog" timestamp="1597296924505">
+    <state x="1365" y="433" key="NewPhpFileDialog" timestamp="1597313040887">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1365" y="433" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597296924505" />
+    <state x="1365" y="433" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597313040887" />
   </component>
 </project>
