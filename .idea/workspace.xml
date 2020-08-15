@@ -41,6 +41,7 @@
       <updated>1597241839012</updated>
       <workItem from="1597241844336" duration="14232000" />
       <workItem from="1597312772453" duration="801000" />
+      <workItem from="1597356559045" duration="26369000" />
     </task>
     <servers />
   </component>
@@ -52,9 +53,17 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="560" y="152" key="#PHP/0.0.1920.1040@0.0.1920.1040" timestamp="1597271626303" />
+    <state x="833" y="451" key="NewPhpClassDialog" timestamp="1597450501545">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="833" y="451" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597450501545" />
     <state x="1365" y="433" key="NewPhpFileDialog" timestamp="1597313040887">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1365" y="433" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597313040887" />
+    <state x="979" y="103" width="585" height="801" key="find.popup" timestamp="1597447612714">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="979" y="103" width="585" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1597447612714" />
   </component>
 </project>
