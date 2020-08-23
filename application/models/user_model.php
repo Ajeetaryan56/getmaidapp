@@ -34,7 +34,8 @@ class User_model extends CI_Model
 			'City' => $value['City'],
 			'State' => $value['State'],
 			'Pincode' => $value['Pincode'],
-			'isPremium'=> $value['isPremium']
+			'isPremium'=> $value['isPremium'],
+			'UserId' => $value['ID']
 		);
 		return $data;
 	}
@@ -47,16 +48,16 @@ class User_model extends CI_Model
 		$savedpassword = $tableData["PASSWORD"];
 		if ($password == $savedpassword) {
 			$loginKey = $login_model->executeLogin($tableData);
-			return array('loginKey' => $loginKey, 'message' => "Your are successfully loggedin");
+			return array('loginKey' => $loginKey, 'message' => "Your are successfully loggedin", 'status_code' => 200);
 			}
 		else {
-			return "Wrong password or mobilenumber";
+			return array('message' => "Wrong password or mobilenumber", 'error_code' => 400);
 		}
 	}
 
 	private function  checkAlreadyExistenceOfUser($mobile){
 		$value = $this->db->select('*')->from('users')->where (['MobileNumber'=>$mobile] )->get()->result_array();
-		if ($value){
+		if ($value && count($value) > 0){
 			return true;
 		}
 		return false;
@@ -64,7 +65,7 @@ class User_model extends CI_Model
 
 	public function insert($data){
 		if ($this->checkAlreadyExistenceOfUser($data['MobileNumber']) == true){
-			return "This Mobile Number already registered.";
+			return array('message' => "This Mobile Number already registered.", 'error_code' => 400);
 		}
 		$this->FirstName    = $data['FirstName'];
 		$this->LastName = $data['LastName'];
@@ -79,20 +80,18 @@ class User_model extends CI_Model
 		$this->CreatedDate    = date("Y-m-d H:i:s");
 		$this->ModifiedDate = date("Y-m-d H:i:s");
 
-		if($this->db->insert('users',$this))
-		{
-			return 'User is added successfully';
+		if($this->db->insert('users',$this)) {
+			return array('message' => 'Congrats, you are registered successfully', 'status_code' => 200);
 		}
-		else
-		{
-			return "Error has occurred";
+		else {
+			return array('message' => 'Sorry, we are not able to process your request.', 'error_code' => 422);
 		}
 	}
 
 	public function update($id,$data){
 		$this->FirstName    = $data['FirstName'];
 		$this->LastName = $data['LastName'];
-		$this->EmailId    = $data['EmailId'];
+		$this->EmailId   = $data['EmailId'];
 		$this->PASSWORD = $data['PASSWORD'];
 		$this->Address  = $data['Address'];
 		$this->City    = $data['City'];
@@ -103,26 +102,22 @@ class User_model extends CI_Model
 
 		$result = $this->db->update('users',$this,array('ID' => $id));
 
-		if($result)
-		{
-			return "User Profile is updated successfully";
+		if($result) {
+			return array('message' => "Your Profile is updated successfully", 'status_code' => 200);
 		}
-		else
-		{
-			return "Error has occurred";
+		else {
+			return array('message' => 'Sorry, we are not able to process your request.', 'error_code' => 422);
 		}
 	}
 
 	public function delete($id){
 		$result= $this->db->delete('users', ['ID'=>$id]);
 		//$result = $this->db->query("delete from `users` where ID = $id");
-		if($result)
-		{
-			return "User Profile is deleted successfully";
+		if($result) {
+			return array('message' => "User Profile is deleted successfully", 'status_code' => 200);
 		}
-		else
-		{
-			return "Error has occurred";
+		else {
+			return array('message' => 'Sorry, we are not able to process your request.', 'error_code' => 422);
 		}
 	}
 

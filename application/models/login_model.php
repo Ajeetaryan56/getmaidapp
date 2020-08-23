@@ -25,6 +25,11 @@ class login_model extends CI_Model
 		}
 	}
 
+	public function isLoginKeyValid($loginKey){
+		$result = $this->db->select('*')->from('loginkeys')->where(['loginkey'=>$loginKey])->get()->result_array();
+		return count($result) > 0;
+	}
+
 	public function returnMobile($loginKey){
 		$result = $this->db->select('*')->from('loginkeys')->where(['loginkey'=>$loginKey])->get()->result_array();
 		$value = reset($result);

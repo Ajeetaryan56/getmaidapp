@@ -13,25 +13,42 @@ class society_model extends CI_Model
 	public $Modified;
 	public $Created;
 
-	public function read($data){
-		$email =  $data['EmailId'];
-		$result = $this->db->select('*')->from('societies', ['EmailId'=>$email])->get()->result_array();
-		$value = reset($result);
-		$data = array('SocietyName' => $value['SocietyName'],
-			'EmailId' => $value['EmailId'],
-			'MobileNumber' => $value['MobileNumber'],
-			'Address' =>$value['Address'],
-			'City' => $value['City'],
-			'State' => $value['State'],
-			'Pincode' => $value['Pincode'],
+	function __construct(){
+		parent::__construct();
+		$this->load->model('EmailModel');
+	}
+
+	public function read($key, $data){
+		$result = $this->db->select('*')->from('societies')->where([$key =>$data])->get()->result_array();
+		$response = array();
+		foreach ($result as $value){
+			$data = array('SocietyName' => $value['SocietyName'],
+				'EmailId' => $value['EmailId'],
+				'MobileNumber' => $value['MobileNumber'],
+				'Address' =>$value['Address'],
+				'City' => $value['City'],
+				'State' => $value['State'],
+				'Pincode' => $value['Pincode'],
+				'SocietyId' => $value['ID']
 			);
-		return $data;
+			array_push($response, $data);
+		}
+		//return $this->EmailModel->sendVerificationEmail('ajeetpatel12jul@gmail.com', 'Sample Email');
+		return $response;
+	}
+
+	public function  checkAlreadyExistenceOfSociety($Email){
+		$value = $this->db->select('*')->from('societies')->where (['EmailID'=>$Email] )->get()->result_array();
+		if ($value && count($value) > 0){
+			return true;
+		}
+		return false;
 	}
 
 	public function checkSociety($data, $society_model){
 		$email =  $data['EmailId'];
 		$password = $data['PASSWORD'];
-		$value = $this->db->select('*')->from('societies', ['EmailId'=>$email])->get()->result_array();
+		$value = $this->db->select('*')->from('societies')->where(['EmailId'=>$email])->get()->result_array();
 		$tableData = reset($value);
 		$savedpassword = $tableData["PASSWORD"];
 		if ($password == $savedpassword) {
