@@ -8,7 +8,7 @@ class login_model extends CI_Model
 	public $ipaddresses;
 	public $created;
 
-	public function executeLogin($data) {
+	public function executeLogin1($data) {
 		$this->MobileNumber = $data['MobileNumber'];
 		$this->executeLogout($this->MobileNumber);
 		$this->loginkey = $this->createLoginKey();
@@ -23,6 +23,40 @@ class login_model extends CI_Model
 		{
 			return "Error has occurred";
 		}
+	}
+	public function executeLogin($data) {
+		$this->MobileNumber = $data['MobileNumber'];
+		$existingLoginData = $this->getLoginData($this->MobileNumber);
+		$this->created = date("Y-m-d H:i:s");
+		if($existingLoginData != null){
+			$oldDate = date_create($existingLoginData['created']);
+			$newDate = date_create($this->created);
+			if ($oldDate){
+				$dateDiff = date_diff($oldDate, $newDate);
+				$dateDiff = $dateDiff->format('%R%d');
+				if ($dateDiff < 15){
+					return $existingLoginData['loginkey'];
+				}
+			}
+		}
+		$this->executeLogout($this->MobileNumber);
+		$this->loginkey = $this->createLoginKey();
+		$this->ipaddresses = $this->get_client_ip();
+		$this->created = date("Y-m-d H:i:s");
+		if($this->db->insert('loginkeys',$this)) {
+			return $this->loginkey;
+		}
+		else {
+			return "Error has occurred";
+		}
+	}
+
+	private function getLoginData($mobile){
+		$result = $this->db->select('*')->from('loginkeys')->where(['MobileNumber'=>$mobile])->get()->result_array();
+		if (count($result) > 0){return reset($result); }else{
+			return null;
+		}
+
 	}
 
 	public function isLoginKeyValid($loginKey){

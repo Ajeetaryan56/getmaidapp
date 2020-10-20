@@ -14,7 +14,35 @@ class Api extends RestController
 		$this->load->model('society_login_model');
 		$this->load->model('society_model');
 		$this->load->model('maid_model');
+		$this->load->model('pincode_model');
+        $this->load->model('Saree_model');
+        $this->load->model('contactus_model');
 	}
+
+    public function saree_post(){
+           $data = array('SareeName' => $this->post('SareeName'),
+			'BrandName' => $this->post('BrandName'),
+			'FabricName' => $this->post('FabricName'),
+			'PriceRange' => $this->post('PriceRange'),
+			'Length' => $this->post('Length'),
+			'Stock' => $this->post('Stock'),
+			'Colors' => $this->post('Colors'),
+		);
+		$r = $this->Saree_model->insertSaree($data);
+		$this->response($r);
+    }
+
+    public function contactus_post(){
+           $data = array('FullName' => $this->post('FullName'),
+			'Email' => $this->post('Email'),
+			'Phone' => $this->post('Phone'),
+			'InterestedIn' => $this->post('InterestedIn'),
+			'Company' => $this->post('Company'),
+			'Description' => $this->post('Description'),
+		);
+		$r = $this->contactus_model->insert($data);
+		$this->response($r);
+    }
 
 	public function login_post(){
 		$data = array(
@@ -34,22 +62,17 @@ class Api extends RestController
 
 	public function user_get()
 	{
-		$MobileNumber = $this->get('MobileNumber');
 		$accessToken = $this->head('Authorization');
-
-		if (is_null($MobileNumber) || is_null($accessToken)){
-			$result = array('message'=> "Parameters are missing in request", 'error_code'=> 400);
+		if (is_null($accessToken)){
+			$result = array('message'=> "Please login again to see profile data", 'error_code'=> 422);
 			$this->response($result);
 		}
 		else{
 			$mobile = $this->login_model->returnMobile($accessToken);
-			if($mobile == $MobileNumber){
-				$r = $this->user_model->read($MobileNumber);
-				$this->response($r);
-			}else{
-				$result = array('message'=> "You don't have any active login", 'error_code'=> 401);
-				$this->response($result);
-			}
+			$r = $this->user_model->read($mobile);
+			//$r = $mobile;
+			$result = array('profile'=> $r, 'status_code'=> 200);
+			$this->response($result);
 		}
 	}
 
@@ -64,7 +87,8 @@ class Api extends RestController
 			'City' => $this->post('City'),
 			'State' => $this->post('State'),
 			'Pincode' => $this->post('Pincode'),
-			'isPremium'=> $this->post('isPremium')
+			'isPremium'=> $this->post('isPremium'),
+			'SocietyId'=> $this->post('SocietyId')
 		);
 		$r = $this->user_model->insert($data);
 		$this->response($r);
@@ -130,7 +154,8 @@ class Api extends RestController
 
 	public function societies_get(){
 		$City =  $this->get('City');
-		$result = $this->society_model->read('City', $City);
+		$societies = $this->society_model->read('City', $City);
+		$result = array('societies'=> $societies, 'status_code'=> 200);
 		$this->response($result);
 	}
 
@@ -144,8 +169,9 @@ class Api extends RestController
 	public function maids_get(){
 		$accessToken = $this->head('Authorization');
 		$societyId = $this->get('SocietyId');
-		if ($this->login_model->isLoginKeyValid($accessToken) == true){
+		if ($this->login_model->isLoginKeyValid($accessToken) == true || $this->society_login_model->isLoginKeyValid($accessToken) == true){
 			$result = $this->maid_model->read('SocietyId', $societyId);
+			$result = array('maids'=> $result, 'status_code'=> 200);
 		}else{
 			$result = array('message'=> "You don't have any active login", 'error_code'=> 401);
 		}
@@ -180,5 +206,10 @@ class Api extends RestController
 				$this->response($result);
 			}
 		}
+	}
+
+	public function pin_get(){
+		$pincode = $this->get('pincode');
+		$this->response($this->pincode_model->getPincodeDetails($pincode));
 	}
 }

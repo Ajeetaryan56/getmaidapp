@@ -33,6 +33,9 @@ class maid_model extends CI_Model
 				'Pincode' => $value['Pincode'],
 				'FlatNumbers' => $value['FlatNumbers'],
 				'Rating' => $value['Rating'],
+				'MaidId' => (int)$value['ID'] ,
+				'created' => $value['Created'],
+				'modified' => $value['Modified'],
 				'SocietyId' => $value['SocietyId']
 			);
 			array_push($response, $data);

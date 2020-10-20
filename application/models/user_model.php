@@ -20,10 +20,10 @@ class User_model extends CI_Model
     public $isPremium;
     public $CreatedDate;
     public $ModifiedDate;
+    public $SocietyId;
 	private $load;
 
-	public function read($data){
-		$mobile =  $data['MobileNumber'];
+	public function read($mobile){
 		$result = $this->db->select('*')->from('users', ['MobileNumber'=>$mobile])->get()->result_array();
 		$value = reset($result);
 		$data = array('FirstName' => $value['FirstName'],
@@ -34,8 +34,11 @@ class User_model extends CI_Model
 			'City' => $value['City'],
 			'State' => $value['State'],
 			'Pincode' => $value['Pincode'],
-			'isPremium'=> $value['isPremium'],
-			'UserId' => $value['ID']
+			'isPremium'=> (bool)$value['IsPremium'],
+			'UserId' => (int)$value['ID'] ,
+			'created' => $value['CreatedDate'],
+			'modified' => $value['ModifiedDate'],
+			'societyId' => (int)$value['SocietyId'],
 		);
 		return $data;
 	}
@@ -77,6 +80,7 @@ class User_model extends CI_Model
 		$this->State = $data['State'];
 		$this->Pincode  = $data['Pincode'];
 		$this->isPremium = $data['isPremium'];
+		$this->SocietyId = $data['SocietyId'];
 		$this->CreatedDate    = date("Y-m-d H:i:s");
 		$this->ModifiedDate = date("Y-m-d H:i:s");
 
